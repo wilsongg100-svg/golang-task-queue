@@ -5,6 +5,13 @@ import (
 	"time"
 )
 
+const (
+	STATUS_PENDING   string = "pending"
+	STATUS_RUNNING   string = "running"
+	STATUS_COMPLETED string = "completed"
+	STATUS_FAILED    string = "failed"
+)
+
 type Task struct {
 	ID        string
 	Payload   string
@@ -17,17 +24,11 @@ func NewTask(id, payload string) Task {
 	return Task{
 		ID:        id,
 		Payload:   payload,
-		Status:    "pending",
+		Status:    STATUS_PENDING,
 		CreatedAt: time.Now(),
 		UpdatedAt: time.Now(),
 	}
 }
-
-const (
-	STATUS_RUNNING   string = "running"
-	STATUS_COMPLETED string = "completed"
-	STATUS_FAILED    string = "failed"
-)
 
 func (t *Task) UpdateStatus(status string) error {
 	if !isValidStatus(status) {
@@ -41,7 +42,7 @@ func (t *Task) UpdateStatus(status string) error {
 
 func isValidStatus(status string) bool {
 	switch status {
-	case STATUS_RUNNING, STATUS_COMPLETED, STATUS_FAILED:
+	case STATUS_RUNNING, STATUS_COMPLETED, STATUS_FAILED, STATUS_PENDING:
 		return true
 	default:
 		return false
